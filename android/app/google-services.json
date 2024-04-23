@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "268401291870",
+    "project_id": "chatapp-ginbqs",
+    "storage_bucket": "chatapp-ginbqs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268401291870:android:ff4a5c67c67ccbd54b7acf",
+        "android_client_info": {
+          "package_name": "com.example.chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8FliuACbheBWdbkvSuZLWUWrE4Ah9NkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
