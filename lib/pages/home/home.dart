@@ -21,11 +21,12 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Obx(() => GetMaterialApp(
           title: 'Chat App',
-          // initialRoute: auth.isSkipIntro.isTrue
-          //     ? (auth.isAuth.isTrue ? RouteName.CHAT : RouteName.LOGIN)
-          //     : RouteName.INTRODUCTION,
-          initialRoute:
-              auth.isSkipIntro.isTrue ? RouteName.INITIAL : RouteName.INITIAL,
+          initialRoute: auth.isSkipIntro.isTrue
+              ? (auth.isAuth.isTrue ? RouteName.CHAT : RouteName.LOGIN)
+              : RouteName.INTRODUCTION,
+          // initialRoute: RouteName.INTRODUCTION,
+          // initialRoute:
+          //     auth.isSkipIntro.isTrue ? RouteName.INITIAL : RouteName.INITIAL,
           getPages: AppPage.pages,
         ));
   }

@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(

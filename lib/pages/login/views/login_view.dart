@@ -1,13 +1,15 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
+import 'package:chat/core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:chat/routes/name_route.dart';
 import 'package:lottie/lottie.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
+  final authC = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +31,7 @@ class LoginView extends GetView<LoginController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: ElevatedButton(
-                    onPressed: () {
-                      Get.offAllNamed(RouteName.DASHBOARD);
-                    },
+                    onPressed: () => authC.login(),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
