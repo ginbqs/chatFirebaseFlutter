@@ -15,22 +15,25 @@ class IntroductionView extends GetView<IntroductionController> {
       body: IntroductionScreen(
         pages: [
           PageViewModel(
-            title: "Title of satu",
-            body: "Welcome to the app! This is a description of how it works.",
+            title: "Selamat Datang",
+            body:
+                "Langkah pertama, buatlah profil Anda! Tambahkan foto dan sedikit informasi tentang diri Anda untuk memberikan sentuhan personal.",
             image: const Center(
               child: Icon(Icons.waving_hand, size: 50.0),
             ),
           ),
           PageViewModel(
-            title: "Title of dua",
-            body: "Welcome to the app! This is a description of how it works.",
+            title: "Teman",
+            body:
+                "Langkah berikutnya, temukan teman-teman Anda! Mulailah dengan mencari dan menambahkan kontak yang Anda kenal.",
             image: const Center(
               child: Icon(Icons.waving_hand, size: 50.0),
             ),
           ),
           PageViewModel(
-            title: "Title of tiga",
-            body: "Welcome to the app! This is a description of how it works.",
+            title: "Chat",
+            body:
+                "Sekarang saatnya untuk mengobrol! Kirim pesan teks, kirim gambar, atau kirim stiker lucu kepada teman-teman Anda.",
             image: Container(
               width: Get.width * 0.6,
               child: Center(

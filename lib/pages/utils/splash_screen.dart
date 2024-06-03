@@ -47,10 +47,15 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.edit, size: 80, color: Colors.white),
+            // Icon(Icons.edit, size: 80, color: Colors.white),
+            Image.asset(
+              'assets/logo/logo.png',
+              width: 150,
+              height: 150,
+            ),
             SizedBox(height: 20),
             Text(
-              'POS',
+              'ChatKoe',
               style: TextStyle(
                 fontStyle: FontStyle.italic,
                 color: Colors.white,

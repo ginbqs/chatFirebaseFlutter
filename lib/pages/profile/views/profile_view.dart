@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
+import 'package:chat/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +9,8 @@ import 'package:lottie/lottie.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
+  final auth = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +25,7 @@ class ProfileView extends GetView<ProfileController> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => auth.logout(),
             icon: Icon(
               Icons.logout,
               color: Colors.black,
