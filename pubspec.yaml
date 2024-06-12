@@ -41,6 +41,7 @@ dependencies:
   introduction_screen: ^3.1.14
   emoji_picker_flutter: ^2.1.1
   google_sign_in: ^6.2.1
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:

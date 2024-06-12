@@ -1,12 +1,15 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
+import 'package:chat/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import '../home/home.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  final authC = Get.put(AuthController(), permanent: true);
+  SplashScreen({Key? key, authC}) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -18,6 +21,8 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+
+    widget.authC.firstInitialized();
 
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(

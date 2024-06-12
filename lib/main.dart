@@ -1,8 +1,10 @@
+import 'package:chat/auth_controller.dart';
 import 'package:chat/pages/utils/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,15 +21,19 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
-
+  await GetStorage.init();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final authC = Get.put(AuthController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SplashScreen(),
     );
+    //   return FutureBuilder(
+    //       future: authC.firstInitialized(),
+    //       builder: (context, snapshot) => const SplashScreen());
   }
 }

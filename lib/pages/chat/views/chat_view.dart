@@ -17,7 +17,7 @@ class ChatView extends GetView<ChatController> {
         backgroundColor: Colors.purple,
         leadingWidth: 100,
         leading: InkWell(
-          onTap: () {},
+          onTap: () => Get.offAllNamed(RouteName.CHAT),
           borderRadius: BorderRadius.circular(100),
           child: Row(
             children: [

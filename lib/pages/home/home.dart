@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
     return Obx(() => GetMaterialApp(
           title: 'Chat App',
           initialRoute: auth.isSkipIntro.isTrue
-              ? (auth.isAuth.isTrue ? RouteName.CHAT : RouteName.LOGIN)
+              ? (auth.isAuth.isTrue ? RouteName.DASHBOARD : RouteName.LOGIN)
               : RouteName.INTRODUCTION,
           // initialRoute: RouteName.INTRODUCTION,
           // initialRoute:
