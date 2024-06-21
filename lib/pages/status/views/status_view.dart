@@ -53,7 +53,7 @@ class StatusView extends GetView<StatusController> {
                   style: TextStyle(color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.purple,
+                  backgroundColor: Colors.purple,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),

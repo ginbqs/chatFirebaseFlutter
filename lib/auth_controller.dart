@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:chat/routes/name_route.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthController extends GetxController {
   var isSkipIntro = false.obs;
@@ -11,6 +12,8 @@ class AuthController extends GetxController {
 
   GoogleSignIn _googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _currentUser;
+  UserCredential? userCredential;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> firstInitialized() async {
     await autoLogin().then((value) {
@@ -59,11 +62,29 @@ class AuthController extends GetxController {
         final credential = GoogleAuthProvider.credential(
             idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
 
-        final userCredential =
-            await FirebaseAuth.instance.signInWithCredential(credential);
+        await FirebaseAuth.instance
+            .signInWithCredential(credential)
+            .then((value) => userCredential = value);
 
         final box = GetStorage();
         box.write('skipIntro', true);
+
+        CollectionReference users = firestore.collection('users');
+        users.doc(_currentUser!.email).set({
+          "uid": userCredential!.user!.uid,
+          "name": _currentUser!.displayName,
+          "email": _currentUser!.email,
+          "photoUrl": _currentUser!.photoUrl,
+          "status": "",
+          "createdAt":
+              userCredential!.user!.metadata.creationTime!.toIso8601String(),
+          "updatedAt":
+              userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+          "updatedTime": DateTime.now().toIso8601String()
+        });
+        print('======');
+        print(users);
+        print('======');
 
         isAuth.value = true;
         Get.offAllNamed(RouteName.DASHBOARD);
@@ -71,14 +92,14 @@ class AuthController extends GetxController {
         print("login google gagal");
         print(isSign);
       }
-    } catch (error) {
+    } on FirebaseException catch (error) {
       print('error nin');
       print(error);
     }
   }
 
   Future<void> logout() async {
-    await _googleSignIn.disconnect();
+    // await _googleSignIn.disconnect();
     await _googleSignIn.signOut();
     Get.offAllNamed(RouteName.LOGIN);
   }

@@ -47,7 +47,7 @@ class LoginView extends GetView<LoginController> {
                       ],
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.purple,
+                      backgroundColor: Colors.purple,
                       padding: EdgeInsets.symmetric(horizontal: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
