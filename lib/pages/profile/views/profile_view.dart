@@ -9,7 +9,7 @@ import 'package:lottie/lottie.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
-  final auth = Get.find<AuthController>();
+  final authC = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class ProfileView extends GetView<ProfileController> {
         ),
         actions: [
           IconButton(
-            onPressed: () => auth.logout(),
+            onPressed: () => authC.logout(),
             icon: Icon(
               Icons.logout,
               color: Colors.black,
@@ -40,25 +40,35 @@ class ProfileView extends GetView<ProfileController> {
             child: Column(
               children: [
                 Container(
-                  width: 200,
-                  height: 200,
+                  width: 175,
+                  height: 175,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.black12,
-                    borderRadius: BorderRadius.circular(100),
+                    borderRadius: BorderRadius.circular(200),
                   ),
-                  child: Image.asset(
-                    'assets/logo/person.png',
-                    width: 150,
-                    height: 150,
-                  ),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(200),
+                      child: authC.user.value.photoUrl == 'noimage'
+                          ? Image.asset(
+                              'assets/logo/person.png',
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                              authC.user.value.photoUrl!,
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.cover,
+                            )),
                 ),
                 Text(
-                  'Ginanjar Abdul Wahab',
+                  authC.user.value.name!,
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'gin@gmail.com',
+                  authC.user.value.email!,
                   style: TextStyle(fontSize: 18),
                 ),
               ],

@@ -1,4 +1,5 @@
 import 'package:chat/core.dart';
+import 'package:chat/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:chat/routes/name_route.dart';
@@ -14,6 +15,8 @@ class AuthController extends GetxController {
   GoogleSignInAccount? _currentUser;
   UserCredential? userCredential;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  var user = UsersModel().obs;
 
   Future<void> firstInitialized() async {
     await autoLogin().then((value) {
@@ -41,6 +44,31 @@ class AuthController extends GetxController {
     try {
       final isSignIn = await _googleSignIn.isSignedIn();
       if (isSignIn) {
+        await _googleSignIn
+            .signInSilently()
+            .then((value) => _currentUser = value);
+
+        final googleAuth = await _currentUser!.authentication;
+        final credential = GoogleAuthProvider.credential(
+            idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+
+        await FirebaseAuth.instance
+            .signInWithCredential(credential)
+            .then((value) => userCredential = value);
+
+        CollectionReference users = firestore.collection('users');
+
+        users.doc(_currentUser!.email).update({
+          "lastSignInTime":
+              userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+        });
+
+        final currUser = await users.doc(_currentUser!.email).get();
+        final currUserData = currUser.data() as Map<String, dynamic>;
+
+        user(UsersModel.fromJson(currUserData));
+        user.refresh();
+
         return true;
       }
       return false;
@@ -70,21 +98,34 @@ class AuthController extends GetxController {
         box.write('skipIntro', true);
 
         CollectionReference users = firestore.collection('users');
-        users.doc(_currentUser!.email).set({
-          "uid": userCredential!.user!.uid,
-          "name": _currentUser!.displayName,
-          "email": _currentUser!.email,
-          "photoUrl": _currentUser!.photoUrl,
-          "status": "",
-          "createdAt":
-              userCredential!.user!.metadata.creationTime!.toIso8601String(),
-          "updatedAt":
-              userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
-          "updatedTime": DateTime.now().toIso8601String()
-        });
-        print('======');
-        print(users);
-        print('======');
+
+        final checkUser = await users.doc(_currentUser!.email).get();
+
+        if (checkUser.data() == null) {
+          users.doc(_currentUser!.email).set({
+            "uid": userCredential!.user!.uid,
+            "name": _currentUser!.displayName,
+            "email": _currentUser!.email,
+            "photoUrl": _currentUser!.photoUrl ?? "noimage",
+            "status": "",
+            "createdAt":
+                userCredential!.user!.metadata.creationTime!.toIso8601String(),
+            "updatedAt": userCredential!.user!.metadata.lastSignInTime!
+                .toIso8601String(),
+            "updatedTime": DateTime.now().toIso8601String()
+          });
+        } else {
+          users.doc(_currentUser!.email).update({
+            "lastSignInTime": userCredential!.user!.metadata.lastSignInTime!
+                .toIso8601String(),
+          });
+        }
+
+        final currUser = await users.doc(_currentUser!.email).get();
+        final currUserData = currUser.data() as Map<String, dynamic>;
+
+        user(UsersModel.fromJson(currUserData));
+        user.refresh();
 
         isAuth.value = true;
         Get.offAllNamed(RouteName.DASHBOARD);
