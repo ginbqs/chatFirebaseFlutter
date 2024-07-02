@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
+import 'package:chat/core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,8 +9,12 @@ import 'package:lottie/lottie.dart';
 import '../controllers/status_controller.dart';
 
 class StatusView extends GetView<StatusController> {
+  final authC = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
+    controller.statusC.text = authC.user.value.status!;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
@@ -20,7 +25,7 @@ class StatusView extends GetView<StatusController> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           color: Colors.white,
-          onPressed: () {},
+          onPressed: () => Get.back(),
         ),
         centerTitle: true,
       ),
@@ -29,6 +34,7 @@ class StatusView extends GetView<StatusController> {
         child: Column(
           children: [
             TextField(
+              controller: controller.statusC,
               cursorColor: Colors.purple,
               decoration: InputDecoration(
                 labelText: 'Status',
@@ -47,7 +53,9 @@ class StatusView extends GetView<StatusController> {
             Container(
               width: Get.width,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  authC.changeStatus(controller.statusC.text);
+                },
                 child: Text(
                   'Update',
                   style: TextStyle(color: Colors.white),

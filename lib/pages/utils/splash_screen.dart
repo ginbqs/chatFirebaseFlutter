@@ -22,7 +22,9 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
-    widget.authC.firstInitialized();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.authC.firstInitialized();
+    });
 
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(

@@ -81,7 +81,7 @@ class ProfileView extends GetView<ProfileController> {
             child: Column(
               children: [
                 ListTile(
-                  onTap: () {},
+                  onTap: () => Get.toNamed(RouteName.STATUS),
                   leading: Icon(Icons.edit_document),
                   title: Text(
                     'Update Status',
@@ -95,7 +95,7 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () => Get.toNamed(RouteName.CHANGE_PROFILE),
                   leading: Icon(Icons.person),
                   title: Text(
                     'Change Profile',

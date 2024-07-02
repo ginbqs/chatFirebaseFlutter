@@ -7,6 +7,7 @@ import 'package:chat/pages/friends/views/friend_view.dart';
 import 'package:chat/pages/introduction/views/introduction_view.dart';
 import 'package:chat/pages/login/views/login_view.dart';
 import 'package:chat/pages/profile/views/profile_view.dart';
+import 'package:chat/pages/status/bindings/status_binding.dart';
 import 'package:chat/pages/status/views/status_view.dart';
 import 'package:chat/routes/name_route.dart';
 import 'package:get/get.dart';
@@ -41,6 +42,7 @@ class AppPage {
     GetPage(
       name: RouteName.STATUS,
       page: () => StatusView(),
+      binding: ChangeStatusBinding(),
     ),
     GetPage(
         name: RouteName.CHANGE_PROFILE,

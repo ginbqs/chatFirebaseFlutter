@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
+import 'package:chat/core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,8 +9,14 @@ import 'package:lottie/lottie.dart';
 import '../controllers/change_profile_controller.dart';
 
 class ChangeProfileView extends GetView<ChangeProfileController> {
+  final authC = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
+    controller.emailC.text = authC.user.value.email!;
+    controller.nameC.text = authC.user.value.name!;
+    controller.statusC.text = authC.user.value.status!;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -21,7 +28,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
         centerTitle: true,
         backgroundColor: Colors.purple,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => Get.back(),
           icon: Icon(
             Icons.arrow_back,
           ),
@@ -56,6 +63,8 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
               TextField(
                 controller: controller.emailC,
                 cursorColor: Colors.purple,
+                readOnly: true,
+                textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   label: Text('Email'),
                   border: OutlineInputBorder(
@@ -73,6 +82,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
               TextField(
                 controller: controller.nameC,
                 cursorColor: Colors.purple,
+                textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   label: Text('Nama'),
                   border: OutlineInputBorder(
@@ -90,6 +100,7 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
               TextField(
                 controller: controller.statusC,
                 cursorColor: Colors.purple,
+                textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                   label: Text('Status'),
                   border: OutlineInputBorder(
@@ -125,7 +136,12 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
               Container(
                 width: Get.width,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    authC.changeProfile(
+                      controller.nameC.text,
+                      controller.statusC.text,
+                    );
+                  },
                   child: Text(
                     'Update',
                     style: TextStyle(color: Colors.white),

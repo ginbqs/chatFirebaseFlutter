@@ -20,12 +20,14 @@ class AuthController extends GetxController {
 
   Future<void> firstInitialized() async {
     await autoLogin().then((value) {
+      print('autoLogin ${value}');
       if (value) {
         isAuth.value = true;
       }
     });
 
     await skipIntro().then((value) {
+      print('skipIntro ${value}');
       if (value) {
         isSkipIntro.value = true;
       }
@@ -143,5 +145,52 @@ class AuthController extends GetxController {
     // await _googleSignIn.disconnect();
     await _googleSignIn.signOut();
     Get.offAllNamed(RouteName.LOGIN);
+  }
+
+  void changeProfile(String name, String status) {
+    CollectionReference users = firestore.collection('users');
+    final date = DateTime.now().toIso8601String();
+    final data = {
+      'name': name,
+      'status': status,
+      'lastSignInTime':
+          userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+      'updatedTime': date,
+    };
+
+    users.doc(_currentUser!.email).update(data);
+
+    user.update((user) {
+      user!.name = name;
+      user!.status = status;
+      user.lastSignInTime =
+          userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
+      user.updatedTime = date;
+    });
+    user.refresh();
+
+    Get.defaultDialog(title: "Success", middleText: "change profile success");
+  }
+
+  void changeStatus(String status) {
+    CollectionReference users = firestore.collection('users');
+    final date = DateTime.now().toIso8601String();
+
+    users.doc(_currentUser!.email).update({
+      'status': status,
+      'lastSignInTime':
+          userCredential!.user!.metadata.lastSignInTime!.toIso8601String(),
+      'updatedTime': date,
+    });
+
+    user.update((user) {
+      user!.status = status;
+      user.lastSignInTime =
+          userCredential!.user!.metadata.lastSignInTime!.toIso8601String();
+      user.updatedTime = date;
+    });
+    user.refresh();
+
+    Get.defaultDialog(title: "Success", middleText: "status success");
   }
 }
