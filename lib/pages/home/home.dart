@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
           initialRoute: auth.isSkipIntro.isTrue
               ? (auth.isAuth.isTrue ? RouteName.DASHBOARD : RouteName.LOGIN)
               : RouteName.INTRODUCTION,
-          // initialRoute: RouteName.INTRODUCTION,
+          // initialRoute: RouteName.LOGIN,
           // initialRoute:
           //     auth.isSkipIntro.isTrue ? RouteName.INITIAL : RouteName.INITIAL,
           getPages: AppPage.pages,

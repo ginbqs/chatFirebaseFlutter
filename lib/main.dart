@@ -1,3 +1,5 @@
+import 'package:chat/theme/constant_theme.dart';
+import 'package:chat/theme/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:chat/auth_controller.dart';
@@ -25,12 +27,17 @@ void main() async {
   runApp(MyApp());
 }
 
+ThemeManager _themeManager = ThemeManager();
+
 class MyApp extends StatelessWidget {
   final authC = Get.put(AuthController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SplashScreen(),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: _themeManager.themeMode,
     );
     //   return FutureBuilder(
     //       future: authC.firstInitialized(),

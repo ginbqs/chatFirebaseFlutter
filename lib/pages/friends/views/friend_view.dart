@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
+import 'package:chat/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,35 +9,11 @@ import 'package:lottie/lottie.dart';
 import '../controllers/friend_controller.dart';
 
 class FriendView extends GetView<FriendController> {
-  final List<Widget> myFriends = List.generate(
-    20,
-    (index) => ListTile(
-      leading: CircleAvatar(
-        radius: 30,
-        backgroundColor: Colors.black26,
-      ),
-      title: Text(
-        'Orang ke ${index + 1}',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w400,
-        ),
-      ),
-      subtitle: Text(
-        'email@gmail.com',
-        style: TextStyle(
-          fontSize: 16,
-          color: Colors.black54,
-        ),
-      ),
-      trailing: GestureDetector(
-        onTap: () => Get.toNamed(RouteName.CHAT),
-        child: Chip(
-          label: Text('Message'),
-        ),
-      ),
-    ),
-  ).reversed.toList();
+  final authC = Get.find<AuthController>();
+  // final List<Widget> myFriends = List.generate(
+  //   20,
+  //   (index) =>
+  // ).reversed.toList();
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +36,8 @@ class FriendView extends GetView<FriendController> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: TextField(
+                onChanged: (value) =>
+                    controller.searchFriend(value, authC.user.value.email!),
                 cursorColor: Colors.purple,
                 decoration: InputDecoration(
                   fillColor: Colors.white,
@@ -86,26 +65,65 @@ class FriendView extends GetView<FriendController> {
           ),
         ),
       ),
-      body: myFriends.length < 1
-          ? Center(
-              child: Container(
-                width: Get.width * 0.7,
-                height: Get.width * 0.7,
-                decoration: BoxDecoration(color: Colors.purple),
-                child: Center(
-                    child: Text(
-                  'Kosong',
-                  style: TextStyle(
-                    color: Colors.white,
+      body: Obx(
+        () => controller.tempSearch.length < 1
+            ? Center(
+                child: Container(
+                  width: Get.width * 0.7,
+                  height: Get.width * 0.7,
+                  decoration: BoxDecoration(color: Colors.purple),
+                  child: Center(
+                      child: Text(
+                    'Kosong',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  )),
+                ),
+              )
+            : ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: controller.tempSearch.length,
+                itemBuilder: (context, index) => ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.black26,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child:
+                          controller.tempSearch[index]['photoUrl'] == 'noimage'
+                              ? Image.asset('assets/logo/person.png',
+                                  fit: BoxFit.cover)
+                              : Image.network(
+                                  controller.tempSearch[index]['photoUrl'],
+                                  fit: BoxFit.cover),
+                    ),
                   ),
-                )),
+                  title: Text(
+                    '${controller.tempSearch[index]['name']}',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  subtitle: Text(
+                    '${controller.tempSearch[index]['email']}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  trailing: GestureDetector(
+                    onTap: () => authC.addNewConnection(
+                      controller.tempSearch[index]['email'],
+                    ),
+                    child: Chip(
+                      label: Text('Message'),
+                    ),
+                  ),
+                ),
               ),
-            )
-          : ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: myFriends.length,
-              itemBuilder: (context, index) => myFriends[index],
-            ),
+      ),
     );
   }
 }

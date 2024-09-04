@@ -36,42 +36,44 @@ class ProfileView extends GetView<ProfileController> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: Column(
-              children: [
-                Container(
-                  width: 175,
-                  height: 175,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.black12,
-                    borderRadius: BorderRadius.circular(200),
-                  ),
-                  child: ClipRRect(
+          Obx(
+            () => Center(
+              child: Column(
+                children: [
+                  Container(
+                    width: 175,
+                    height: 175,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.black12,
                       borderRadius: BorderRadius.circular(200),
-                      child: authC.user.value.photoUrl == 'noimage'
-                          ? Image.asset(
-                              'assets/logo/person.png',
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.network(
-                              authC.user.value.photoUrl!,
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.cover,
-                            )),
-                ),
-                Text(
-                  authC.user.value.name!,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  authC.user.value.email!,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ],
+                    ),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(200),
+                        child: authC.user.value.photoUrl == 'noimage'
+                            ? Image.asset(
+                                'assets/logo/person.png',
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                authC.user.value.photoUrl!,
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              )),
+                  ),
+                  Text(
+                    authC.user.value.name!,
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    authC.user.value.email!,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(

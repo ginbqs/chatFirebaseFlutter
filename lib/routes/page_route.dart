@@ -2,7 +2,9 @@ import 'package:chat/pages/change_profile/bindings/change_profile_binding.dart';
 import 'package:chat/pages/change_profile/views/change_profile_view.dart';
 import 'package:chat/pages/chat/bindings/chat_binding.dart';
 import 'package:chat/pages/chat/views/chat_view.dart';
+import 'package:chat/pages/dashboard/bindings/dashboard_binding.dart';
 import 'package:chat/pages/dashboard/views/dashboard_view.dart';
+import 'package:chat/pages/friends/bindings/friend_binding.dart';
 import 'package:chat/pages/friends/views/friend_view.dart';
 import 'package:chat/pages/introduction/views/introduction_view.dart';
 import 'package:chat/pages/login/views/login_view.dart';
@@ -25,6 +27,7 @@ class AppPage {
     GetPage(
       name: RouteName.DASHBOARD,
       page: () => DashboardView(),
+      binding: DashboardBinding(),
     ),
     GetPage(
       name: RouteName.CHAT,
@@ -38,6 +41,7 @@ class AppPage {
     GetPage(
       name: RouteName.FRIEND,
       page: () => FriendView(),
+      binding: FriendBinding(),
     ),
     GetPage(
       name: RouteName.STATUS,

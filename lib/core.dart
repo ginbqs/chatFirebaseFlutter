@@ -4,6 +4,8 @@ If there is a conflicting class name in this file,
 it means you have to rename it to something more unique.
 */
 export 'package:chat/auth_controller.dart';
+export 'package:chat/data/models/chats_model.dart';
+export 'package:chat/data/models/user_model.dart';
 export 'package:chat/pages/change_profile/bindings/change_profile_binding.dart';
 export 'package:chat/pages/change_profile/controllers/change_profile_controller.dart';
 export 'package:chat/pages/change_profile/views/change_profile_view.dart';

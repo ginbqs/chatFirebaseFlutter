@@ -1,5 +1,7 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
+import 'dart:io';
+
 import 'package:chat/core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -118,11 +120,64 @@ class ChangeProfileView extends GetView<ChangeProfileController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('no image'),
+                  GetBuilder<ChangeProfileController>(
+                      builder: (c) => c.pickImage != null
+                          ? Column(
+                              children: [
+                                Container(
+                                  height: 110,
+                                  width: 120,
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        height: 100,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          image: DecorationImage(
+                                            image: FileImage(
+                                              File(c.pickImage!.path),
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: -10,
+                                        right: -5,
+                                        child: IconButton(
+                                          onPressed: () => c.resetImage(),
+                                          icon: Icon(Icons.delete),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () => c
+                                      .uploadImage(authC.user.value.uid!)
+                                      .then((value) {
+                                    if (value != null) {
+                                      authC.updatePhotoUrl(value);
+                                    }
+                                  }),
+                                  child: Text(
+                                    'Upload',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                  style: TextButton.styleFrom(
+                                      backgroundColor: Colors.purple),
+                                ),
+                              ],
+                            )
+                          : Text('no image')),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => controller.selectImage(),
                     child: Text(
-                      'Upload',
+                      'Pilih Gambar',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.white),
                     ),
