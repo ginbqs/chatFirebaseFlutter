@@ -4,6 +4,9 @@ import 'package:chat/pages/chat/bindings/chat_binding.dart';
 import 'package:chat/pages/chat/views/chat_view.dart';
 import 'package:chat/pages/dashboard/bindings/dashboard_binding.dart';
 import 'package:chat/pages/dashboard/views/dashboard_view.dart';
+import 'package:chat/pages/form_hobbies/views/form_hobbies_view.dart';
+import 'package:chat/pages/form_photo/views/form_photo_view.dart';
+import 'package:chat/pages/form_profile/views/form_profile_view.dart';
 import 'package:chat/pages/friends/bindings/friend_binding.dart';
 import 'package:chat/pages/friends/views/friend_view.dart';
 import 'package:chat/pages/introduction/views/introduction_view.dart';
@@ -23,6 +26,18 @@ class AppPage {
     GetPage(
       name: RouteName.INTRODUCTION,
       page: () => IntroductionView(),
+    ),
+    GetPage(
+      name: RouteName.FORM_PROFILE,
+      page: () => FormProfileView(),
+    ),
+    GetPage(
+      name: RouteName.FORM_PHOTO,
+      page: () => FormPhotoView(),
+    ),
+    GetPage(
+      name: RouteName.FORM_HOBBIES,
+      page: () => FormHobbiesView(),
     ),
     GetPage(
       name: RouteName.DASHBOARD,
@@ -49,8 +64,9 @@ class AppPage {
       binding: ChangeStatusBinding(),
     ),
     GetPage(
-        name: RouteName.CHANGE_PROFILE,
-        page: () => ChangeProfileView(),
-        binding: ChangeProfileBinding()),
+      name: RouteName.CHANGE_PROFILE,
+      page: () => ChangeProfileView(),
+      binding: ChangeProfileBinding(),
+    ),
   ];
 }

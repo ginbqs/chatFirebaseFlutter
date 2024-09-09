@@ -2,6 +2,8 @@
 
 import 'package:chat/auth_controller.dart';
 import 'package:chat/routes/name_route.dart';
+import 'package:chat/theme/theme_manager.dart';
+import 'package:chat/theme/constant_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +16,8 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
+ThemeManager _themeManager = ThemeManager();
+
 class _HomeState extends State<Home> {
   final auth = Get.put(AuthController());
 
@@ -21,12 +25,16 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Obx(() => GetMaterialApp(
           title: 'Chat App',
-          initialRoute: auth.isSkipIntro.isTrue
-              ? (auth.isAuth.isTrue ? RouteName.DASHBOARD : RouteName.LOGIN)
-              : RouteName.INTRODUCTION,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: _themeManager.themeMode,
+          // initialRoute: auth.isSkipIntro.isTrue
+          //     ? (auth.isAuth.isTrue ? RouteName.DASHBOARD : RouteName.LOGIN)
+          //     : RouteName.INTRODUCTION,
           // initialRoute: RouteName.LOGIN,
-          // initialRoute:
-          //     auth.isSkipIntro.isTrue ? RouteName.INITIAL : RouteName.INITIAL,
+          initialRoute: auth.isSkipIntro.isTrue
+              ? RouteName.FORM_HOBBIES
+              : RouteName.FORM_HOBBIES,
           getPages: AppPage.pages,
         ));
   }

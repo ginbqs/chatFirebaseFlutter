@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
 import 'package:chat/core.dart';
+import 'package:chat/theme/custom_color.dart';
 import 'package:chat/theme/typography_body.dart';
 import 'package:chat/theme/typography_logo.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class LoginView extends GetView<LoginController> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-            color: Colors.blue,
+            color: Theme.of(context).colorScheme.primary,
             child: Column(
               children: [
                 Expanded(
@@ -27,11 +28,9 @@ class LoginView extends GetView<LoginController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: Image.asset(
-                            'assets/logo/logo.png',
-                            fit: BoxFit.contain,
-                          ),
+                        Image.asset(
+                          'assets/logo/logo.png',
+                          width: 120,
                         ),
                         SizedBox(height: 10),
                         Text(
@@ -58,60 +57,61 @@ class LoginView extends GetView<LoginController> {
                     ),
                     padding: const EdgeInsets.all(40),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Welcome",
-                          style: TypographyBody.SemiBold.copyWith(
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          "Hobbies App",
-                          style: TypographyBody.SemiBold.copyWith(
-                            color: Colors.blue,
-                            fontSize: 24,
-                          ),
-                        ),
-                        Text(
-                          "Find nearby friends with the same hobbies! Join and enjoy fun activities together.",
-                          style: TypographyBody.Regular.copyWith(
-                            fontSize: 14,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          child: ElevatedButton(
-                            onPressed: () => authC.login(),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.g_mobiledata_rounded,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(width: 10),
-                                Text(
-                                  'Sign With Google',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                )
-                              ],
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.purple,
-                              padding: EdgeInsets.symmetric(horizontal: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Welcome",
+                              style: TypographyBody.SemiBold.copyWith(
+                                fontSize: 20,
                               ),
                             ),
+                            Text(
+                              "Hobbies App",
+                              style: TypographyBody.SemiBold.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Text(
+                              "Find nearby friends with the same hobbies! Join and enjoy fun activities together.",
+                              style: TypographyBody.Regular.copyWith(
+                                fontSize: 14,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
+                        ),
+                        OutlinedButton(
+                          onPressed: () => authC.login(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset("assets/images/google.png"),
+                              SizedBox(width: 10),
+                              Text(
+                                'Sign in with Google',
+                                style: TypographyBody.Regular.copyWith(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
-                        )
+                          style: OutlinedButton.styleFrom(
+                            surfaceTintColor: CustomColor.primary[100],
+                            side: BorderSide(color: CustomColor.primary),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                  flex: 2,
+                  flex: 1,
                 )
               ],
             )),

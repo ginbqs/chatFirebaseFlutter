@@ -2,7 +2,7 @@
 
 import 'package:chat/auth_controller.dart';
 import 'package:chat/pages/utils/helper_widget.dart';
-import 'package:chat/theme/constant_color.dart';
+import 'package:chat/theme/custom_color.dart';
 import 'package:chat/theme/typography_body.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:flutter/material.dart';
@@ -67,17 +67,17 @@ class IntroductionView extends GetView<IntroductionController> {
           ),
         ],
         showSkipButton: true,
-        skip: const Text("Skip", style: TextStyle(color: Colors.black26)),
-        next: const Text("Next", style: TextStyle(color: Colors.blue)),
-        done: const Text("Done",
-            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w800)),
+        skip: Text(
+          "Skip",
+          style: TextStyle(color: Color(0xff9c9c9c)),
+        ),
+        next: const Text("Next"),
+        done: const Text("Done", style: TextStyle(fontWeight: FontWeight.w800)),
         onDone: () => authC.toLogin(),
         onSkip: () => authC.toLogin(),
         dotsDecorator: DotsDecorator(
           size: const Size.square(10.0),
           activeSize: const Size(20.0, 10.0),
-          activeColor: Colors.blue,
-          color: Colors.black26,
           spacing: const EdgeInsets.symmetric(horizontal: 3.0),
           activeShape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25.0),
