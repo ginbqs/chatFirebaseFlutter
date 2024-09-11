@@ -33,8 +33,8 @@ class _HomeState extends State<Home> {
           //     : RouteName.INTRODUCTION,
           // initialRoute: RouteName.LOGIN,
           initialRoute: auth.isSkipIntro.isTrue
-              ? RouteName.FORM_HOBBIES
-              : RouteName.FORM_HOBBIES,
+              ? RouteName.FORM_PROFILE
+              : RouteName.FORM_PROFILE,
           getPages: AppPage.pages,
         ));
   }

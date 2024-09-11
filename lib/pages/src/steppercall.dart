@@ -1,15 +1,32 @@
-import 'package:chat/pages/src/stepper.dart';
-import 'package:chat/theme/custom_color.dart';
 import 'package:flutter/material.dart';
+import 'package:tester/stepper/stepper.dart'; // this is the file path of where you store your `cusStepper`
 
-class FormProfileView extends StatefulWidget {
-  const FormProfileView({super.key});
-
-  @override
-  State<FormProfileView> createState() => _FormProfileViewState();
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const App());
 }
 
-class _FormProfileViewState extends State<FormProfileView> {
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Tester',
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   int _index = 0;
 
   @override
@@ -17,8 +34,7 @@ class _FormProfileViewState extends State<FormProfileView> {
     return Scaffold(
       body: Center(
         child: CusStepper(
-          type: CusStepperType.horizontal,
-          lineColor: CustomColor.primary, // new line add for the color change
+          lineColor: Colors.red, // new line add for the color change
           currentStep: _index,
           onStepCancel: () {
             if (_index > 0) {
@@ -41,20 +57,14 @@ class _FormProfileViewState extends State<FormProfileView> {
           },
           steps: <CusStep>[
             CusStep(
-              title: const Text(''),
+              title: const Text('Step 1 title'),
               content: Container(
-                alignment: Alignment.centerLeft,
-                child: const Text('Content for Step 1'),
-              ),
-            ),
-            CusStep(
-              title: Text(''),
-              content: Text('Content for Step 2'),
+                  alignment: Alignment.centerLeft,
+                  child: const Text('Content for Step 1')),
             ),
             const CusStep(
-              title: Text(''),
+              title: Text('Step 2 title'),
               content: Text('Content for Step 2'),
-              isActive: true,
             ),
           ],
         ),
