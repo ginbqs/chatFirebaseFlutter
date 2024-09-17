@@ -10,7 +10,6 @@ enum CusStepState {
 }
 
 enum CusStepperType {
-  vertical,
   horizontal,
 }
 
@@ -74,7 +73,7 @@ class CusStepper extends StatefulWidget {
     super.key,
     required this.steps,
     this.physics,
-    this.type = CusStepperType.vertical,
+    this.type = CusStepperType.horizontal,
     this.currentStep = 0,
     this.onStepTapped,
     this.onStepContinue,
@@ -308,57 +307,30 @@ class _CusStepperState extends State<CusStepper> with TickerProviderStateMixin {
         MaterialLocalizations.of(context);
 
     const OutlinedBorder buttonShape = RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(2)));
+        borderRadius: BorderRadius.all(Radius.circular(8)));
     const EdgeInsets buttonPadding = EdgeInsets.symmetric(horizontal: 16.0);
 
     return Container(
       margin: const EdgeInsets.only(top: 16.0),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints.tightFor(height: 48.0),
-        child: Row(
-          children: <Widget>[
-            TextButton(
-              onPressed: widget.onStepContinue,
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                  return states.contains(MaterialState.disabled)
-                      ? null
-                      : (_isDark()
-                          ? colorScheme.onSurface
-                          : colorScheme.onPrimary);
-                }),
-                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                  return _isDark() || states.contains(MaterialState.disabled)
-                      ? null
-                      : colorScheme.primary;
-                }),
-                padding: const MaterialStatePropertyAll<EdgeInsetsGeometry>(
-                    buttonPadding),
-                shape:
-                    const MaterialStatePropertyAll<OutlinedBorder>(buttonShape),
-              ),
-              child: Text(themeData.useMaterial3
-                  ? localizations.continueButtonLabel
-                  : localizations.continueButtonLabel.toUpperCase()),
-            ),
-            Container(
-              margin: const EdgeInsetsDirectional.only(start: 8.0),
-              child: TextButton(
-                onPressed: widget.onStepCancel,
-                style: TextButton.styleFrom(
-                  foregroundColor: cancelColor,
-                  padding: buttonPadding,
-                  shape: buttonShape,
-                ),
-                child: Text(themeData.useMaterial3
-                    ? localizations.cancelButtonLabel
-                    : localizations.cancelButtonLabel.toUpperCase()),
-              ),
-            ),
-          ],
+      width: double.infinity,
+      child: TextButton(
+        onPressed: widget.onStepContinue,
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+            return states.contains(WidgetState.disabled) ? null : Colors.white;
+          }),
+          backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+            return _isDark() || states.contains(WidgetState.disabled)
+                ? null
+                : colorScheme.primary;
+          }),
+          padding:
+              const WidgetStatePropertyAll<EdgeInsetsGeometry>(buttonPadding),
+          shape: const WidgetStatePropertyAll<OutlinedBorder>(buttonShape),
         ),
+        child: Text('${stepIndex == 2 ? 'Finish' : 'Next'}'),
       ),
     );
   }
@@ -459,109 +431,6 @@ class _CusStepperState extends State<CusStepper> with TickerProviderStateMixin {
     return const SizedBox.shrink();
   }
 
-  Widget _buildVerticalHeader(int index) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: Row(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              _buildLine(!_isFirst(index)),
-              _buildIcon(index, 0),
-              _buildLine(!_isLast(index)),
-            ],
-          ),
-          Expanded(
-            child: Container(
-              margin: const EdgeInsetsDirectional.only(start: 12.0),
-              child: _buildHeaderText(index),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildVerticalBody(int index) {
-    return Stack(
-      children: <Widget>[
-        PositionedDirectional(
-          start: 24.0,
-          top: 0.0,
-          bottom: 0.0,
-          child: SizedBox(
-            width: 24.0,
-            child: Center(
-              child: SizedBox(
-                width: _isLast(index) ? 0.0 : 1.0,
-                child: Container(
-                  color: widget.lineColor,
-                ),
-              ),
-            ),
-          ),
-        ),
-        AnimatedCrossFade(
-          firstChild: Container(height: 0.0),
-          secondChild: Container(
-            margin: widget.margin ??
-                const EdgeInsetsDirectional.only(
-                  start: 60.0,
-                  end: 24.0,
-                  bottom: 24.0,
-                ),
-            child: Column(
-              children: <Widget>[
-                widget.steps[index].content,
-                _buildVerticalControls(index),
-              ],
-            ),
-          ),
-          firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-          secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-          sizeCurve: Curves.fastOutSlowIn,
-          crossFadeState: _isCurrent(index)
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-          duration: kThemeAnimationDuration,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildVertical() {
-    return ListView(
-      shrinkWrap: true,
-      physics: widget.physics,
-      children: <Widget>[
-        for (int i = 0; i < widget.steps.length; i += 1)
-          Column(
-            key: _keys[i],
-            children: <Widget>[
-              InkWell(
-                onTap: widget.steps[i].state != CusStepState.disabled
-                    ? () {
-                        // In the vertical case we need to scroll to the newly tapped
-                        // step.
-                        Scrollable.ensureVisible(
-                          _keys[i].currentContext!,
-                          curve: Curves.fastOutSlowIn,
-                          duration: kThemeAnimationDuration,
-                        );
-
-                        widget.onStepTapped?.call(i);
-                      }
-                    : null,
-                canRequestFocus: widget.steps[i].state != CusStepState.disabled,
-                child: _buildVerticalHeader(i),
-              ),
-              _buildVerticalBody(i),
-            ],
-          ),
-      ],
-    );
-  }
-
   Widget _buildHorizontal() {
     int indexActive = 0;
     for (int i = 0; i < widget.steps.length; i += 1) {
@@ -598,10 +467,6 @@ class _CusStepperState extends State<CusStepper> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsetsDirectional.only(start: 12.0),
-                child: _buildHeaderText(i),
-              ),
             ],
           ),
         ),
@@ -609,7 +474,7 @@ class _CusStepperState extends State<CusStepper> with TickerProviderStateMixin {
           Expanded(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 8.0),
-              height: 1.0,
+              height: 2.5,
               color: indexActive > i ? widget.lineColor : Colors.black45,
             ),
           ),
@@ -632,26 +497,32 @@ class _CusStepperState extends State<CusStepper> with TickerProviderStateMixin {
         Material(
           // elevation: widget.elevation ?? 2,
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Row(
-              children: children,
-            ),
+            margin:
+                const EdgeInsets.only(left: 64, right: 64, top: 24, bottom: 0),
+            child: Column(children: [
+              Row(
+                children: children,
+              ),
+            ]),
           ),
         ),
         Expanded(
-          child: ListView(
-            physics: widget.physics,
-            padding: const EdgeInsets.all(24.0),
-            children: <Widget>[
-              AnimatedSize(
-                curve: Curves.fastOutSlowIn,
-                duration: kThemeAnimationDuration,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: stepPanels),
-              ),
-              _buildVerticalControls(widget.currentStep),
-            ],
+          child: Container(
+            padding:
+                const EdgeInsets.only(left: 24, right: 24, top: 0, bottom: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AnimatedSize(
+                  curve: Curves.fastOutSlowIn,
+                  duration: kThemeAnimationDuration,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: stepPanels),
+                ),
+                _buildVerticalControls(widget.currentStep),
+              ],
+            ),
           ),
         ),
       ],
@@ -674,8 +545,6 @@ class _CusStepperState extends State<CusStepper> with TickerProviderStateMixin {
       return true;
     }());
     switch (widget.type) {
-      case CusStepperType.vertical:
-        return _buildVertical();
       case CusStepperType.horizontal:
         return _buildHorizontal();
     }

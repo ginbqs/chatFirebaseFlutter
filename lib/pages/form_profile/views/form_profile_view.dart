@@ -28,7 +28,7 @@ class _FormProfileViewState extends State<FormProfileView> {
             }
           },
           onStepContinue: () {
-            if (_index <= 0) {
+            if (_index <= 1) {
               setState(() {
                 _index += 1;
               });
@@ -41,20 +41,28 @@ class _FormProfileViewState extends State<FormProfileView> {
           },
           steps: <CusStep>[
             CusStep(
-              title: const Text(''),
+              title: const Text('Title'),
               content: Container(
                 alignment: Alignment.centerLeft,
-                child: const Text('Content for Step 1'),
+                child: Column(
+                  children: [
+                    Text('Content for Step 1 $_index'),
+                    Text('Content for Step 1 $_index'),
+                    Text('Content for Step 1 $_index'),
+                  ],
+                ),
               ),
+              isActive: _index == 0,
             ),
             CusStep(
               title: Text(''),
-              content: Text('Content for Step 2'),
+              content: Text('Content for Step 2 $_index'),
+              isActive: _index == 1,
             ),
-            const CusStep(
+            CusStep(
               title: Text(''),
-              content: Text('Content for Step 2'),
-              isActive: true,
+              content: Text('Content for Step 3 $_index'),
+              isActive: _index == 2,
             ),
           ],
         ),
